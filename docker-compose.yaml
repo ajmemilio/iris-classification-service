@@ -1,0 +1,20 @@
+version: "3"
+
+networks:
+  iris-classification:
+    driver: bridge
+
+services:
+  iris-classification:
+    image: iris-classification
+    restart: always
+    ports:
+      - "8000:8000"
+    command: gunicorn -b 0.0.0.0:8000 src.run:application
+
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - iris-classification
